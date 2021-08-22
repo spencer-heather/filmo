@@ -4,6 +4,10 @@ const state = {
   plex_pin: "",
   plex_code: "",
   auth_token: "",
+  user_uuid: "",
+  username: "",
+  avatar_url: "",
+  logged_in: false,
 };
 
 export default state;

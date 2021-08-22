@@ -10,7 +10,7 @@ const generate_client_uuid = ({ commit }) => {
   commit("SET_CLIENT_UUID", uuid);
 };
 
-const login = async ({ commit, state }) => {
+const login = async ({ commit, state, dispatch }) => {
   // generate pin
   const response = await fetch("https://plex.tv/api/v2/pins", {
     method: "POST",
@@ -46,7 +46,8 @@ const login = async ({ commit, state }) => {
   // poll for user login
   var auth_token = null;
   while (auth_token === null) {
-    const auth_response = await fetch(
+    await new Promise((r) => setTimeout(r, 1000));
+    var auth_response = await fetch(
       `https://plex.tv/api/v2/pins/${state.plex_pin}#?code=${state.plex_code}`,
       {
         method: "GET",
@@ -57,15 +58,37 @@ const login = async ({ commit, state }) => {
         },
       }
     );
-    const auth_data = await auth_response;
-    const json_auth_data = await auth_data.json();
+    var auth_data = await auth_response;
+    var json_auth_data = await auth_data.json();
     auth_token = json_auth_data["authToken"];
-    await new Promise((r) => setTimeout(r, 1000));
   }
   commit("SET_AUTH_TOKEN", auth_token);
+  await dispatch("get_logged_in_user_data");
+  commit("SET_LOGIN_STATE", true);
+};
+
+const get_logged_in_user_data = async ({ commit, state }) => {
+  const response = await fetch("https://plex.tv/api/v2/user", {
+    method: "GET",
+    headers: {
+      "X-Plex-Client-Identifier": state.client_uuid,
+      "X-Plex-Token": state.auth_token,
+      Accept: "application/json",
+    },
+  });
+  const data = await response;
+  const json_data = await data.json();
+  const user_uuid = json_data["uuid"];
+  const username = json_data["username"];
+  const avatar_url = json_data["thumb"];
+  console.log(json_data);
+  commit("SET_USER_UUID", user_uuid);
+  commit("SET_USERNAME", username);
+  commit("SET_AVATAR_URL", avatar_url);
 };
 
 export default {
   generate_client_uuid,
   login,
+  get_logged_in_user_data,
 };
