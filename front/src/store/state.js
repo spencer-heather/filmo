@@ -3,11 +3,20 @@ const state = {
   client_uuid: "",
   plex_pin: "",
   plex_code: "",
-  auth_token: "",
-  user_uuid: "",
-  username: "",
-  avatar_url: "",
-  logged_in: false,
+  user: {
+    auth_token: "",
+    uuid: "",
+    username: "",
+    avatar_url: "",
+    logged_in: false,
+  },
+  empty_user: {
+    auth_token: "",
+    uuid: "",
+    username: "",
+    avatar_url: "",
+    logged_in: false,
+  },
 };
 
 export default state;

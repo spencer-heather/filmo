@@ -1,6 +1,6 @@
 <template>
   <navbar />
-  <router-view id="content" />
+  <router-view />
 </template>
 
 <script>
@@ -26,6 +26,8 @@ export default {
 
 body {
   margin: 0;
+  min-height: 100vh;
+  background-color: #9297ad;
 }
 
 button {
@@ -47,11 +49,6 @@ button:focus {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: black;
-  background-color: #9297ad;
   font-size: 2.5em;
-}
-
-#content {
-  height: 100vh;
 }
 </style>

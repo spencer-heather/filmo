@@ -72,7 +72,7 @@ const get_logged_in_user_data = async ({ commit, state }) => {
     method: "GET",
     headers: {
       "X-Plex-Client-Identifier": state.client_uuid,
-      "X-Plex-Token": state.auth_token,
+      "X-Plex-Token": state.user.auth_token,
       Accept: "application/json",
     },
   });
@@ -81,14 +81,36 @@ const get_logged_in_user_data = async ({ commit, state }) => {
   const user_uuid = json_data["uuid"];
   const username = json_data["username"];
   const avatar_url = json_data["thumb"];
-  console.log(json_data);
   commit("SET_USER_UUID", user_uuid);
   commit("SET_USERNAME", username);
   commit("SET_AVATAR_URL", avatar_url);
+};
+
+const logout = async ({ commit, state }) => {
+  const response = await fetch("https://plex.tv/api/v2/users/signout",
+  {
+    method: "DELETE",
+    headers: {
+      "X-Plex-Client-Identifier": state.client_uuid,
+      "X-Plex-Token": state.user.auth_token,
+      "X-Plex-Product": state.plex_product,
+    }
+  });
+  const data = await response;
+  const status_code = data["status"];
+  if (status_code === 204) {
+    commit("UNSET_USER_PARAMS");
+  } else if (status_code === 401) {
+    // unauthorized; user's token has expired
+    commit("UNSET_USER_PARAMS");
+  } else {
+    console.error("Error logging out");
+  };
 };
 
 export default {
   generate_client_uuid,
   login,
   get_logged_in_user_data,
+  logout,
 };
