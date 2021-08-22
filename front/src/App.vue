@@ -5,6 +5,20 @@
   <router-view />
 </template>
 
+<script>
+import { mapActions } from "vuex";
+
+export default {
+  name: "App",
+  methods: {
+    ...mapActions(["generate_client_uuid"]),
+  },
+  mounted() {
+    this.generate_client_uuid();
+  },
+};
+</script>
+
 <style>
 @font-face {
   font-family: "IBM Plex Sans Thai", sans-serif;
