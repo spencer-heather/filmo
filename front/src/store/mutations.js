@@ -31,7 +31,7 @@ const SET_LOGIN_STATE = (state, login_state) => {
 };
 
 const UNSET_USER_PARAMS = (state) => {
-  state.user = state.empty_user;
+  state.user = JSON.parse(JSON.stringify(state.empty_user));
 };
 
 export default {

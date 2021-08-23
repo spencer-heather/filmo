@@ -29,7 +29,7 @@ export default {
   name: "Navbar",
   data() {
     return {
-      dropdown_width: 100
+      dropdown_width: 100,
     };
   },
   computed: {
@@ -44,7 +44,7 @@ export default {
     ...mapActions(["login", "logout"]),
     on_avatar_load() {
       this.dropdown_width = this.$refs.user_info.clientWidth;
-    }
+    },
   },
 };
 </script>
@@ -62,10 +62,11 @@ export default {
 #login_button {
   background: #ffbc76;
   color: black;
+  margin: 0 10px;
 }
 
 #appname {
-  margin: 0 5px;
+  margin: 0 10px;
 }
 
 #avatar {
@@ -79,15 +80,20 @@ export default {
   align-items: center;
 }
 
-#user_info:hover .user_dropdown {display: flex; flex: 1; flex-direction: column;}
+#user_info:hover .user_dropdown {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
 
 .user_dropdown {
   display: none;
   position: absolute;
   top: 100px;
   right: 0;
-  background: #535A77;
+  background: #535a77;
   border: none;
+  border-radius: 0 0 0 10px;
 }
 
 .user_dropdown div {
@@ -98,5 +104,6 @@ export default {
   cursor: pointer;
   background: #ffbc76;
   color: black;
+  border-radius: 10px;
 }
 </style>

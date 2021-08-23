@@ -87,14 +87,13 @@ const get_logged_in_user_data = async ({ commit, state }) => {
 };
 
 const logout = async ({ commit, state }) => {
-  const response = await fetch("https://plex.tv/api/v2/users/signout",
-  {
+  const response = await fetch("https://plex.tv/api/v2/users/signout", {
     method: "DELETE",
     headers: {
       "X-Plex-Client-Identifier": state.client_uuid,
       "X-Plex-Token": state.user.auth_token,
       "X-Plex-Product": state.plex_product,
-    }
+    },
   });
   const data = await response;
   const status_code = data["status"];
@@ -105,7 +104,7 @@ const logout = async ({ commit, state }) => {
     commit("UNSET_USER_PARAMS");
   } else {
     console.error("Error logging out");
-  };
+  }
 };
 
 export default {
